@@ -1,0 +1,23 @@
+<div class="container">
+  <div class="row">
+    <div class="col-sm loading" *ngIf="loading">
+      <i class="fa fa-spinner fa-spin"></i>
+    </div>
+
+    <div class="col-sm" *ngIf="!loading && !profile">
+      <h2>You have not set your username</h2>
+      <form [formGroup]="form" (ngSubmit)="onSubmitUsername()">
+        <div class="form-group full-width-input">
+          <p><input class="form-control" placeholder="Username" formControlName="username" required></p>
+          <p><button type="submit" class="btn btn-primary">Submit</button></p>
+        </div>
+      </form>
+    </div>
+    <div class="col-sm" *ngIf="!loading && profile">
+      <h2>Your Profile</h2>
+      <p><strong>Email:</strong>{{profile.email}}</p>
+      <p><strong>Username:</strong>{{profile.username}}</p>
+      <p><strong>Score:</strong>{{profile.score}}</p>
+    </div>
+  </div>
+</div>

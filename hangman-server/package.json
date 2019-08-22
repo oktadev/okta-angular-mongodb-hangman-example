@@ -1,0 +1,19 @@
+{
+  "name": "hangman_server",
+  "version": "1.0.0",
+  "description": "",
+  "main": "src/index.js",
+  "dependencies": {
+    "@okta/jwt-verifier": "^1.0.0",
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "express-bearer-token": "^2.4.0",
+    "mongoose": "^5.6.7"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Holger Schmitz",
+  "license": "MIT"
+}

@@ -1,0 +1,26 @@
+<div class="container">
+  <div class="row">
+    <div class="col-sm loading" *ngIf="loading">
+      <i class="fa fa-spinner fa-spin"></i>
+    </div>
+
+    <div class="col-sm" *ngIf="!loading && !profile">
+      <p class="clue">{{game.clue}}</p>
+      <div class="guesses">
+        <span class="guessed" *ngFor="let c of getGuessed()">{{c}}</span>
+      </div>
+      <div class="guesses" *ngIf="game.status==='ok'">
+        <button type="button"  class="btn btn-primary" *ngFor="let c of getNotGuessed()" (click)="guess(c)">{{c}}</button>
+      </div>
+      <div class="game-result" *ngIf="game.status==='lost'">
+        You Lost!
+      </div>
+      <div class="game-result" *ngIf="game.status==='won'">
+        You Won!
+      </div>
+      <div class="game-result" *ngIf="game.status!=='ok'">
+        <button type="button"  class="btn btn-primary" (click)="newGame()">New Game</button>
+      </div>
+    </div>
+  </div>
+</div>

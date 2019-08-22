@@ -1,0 +1,10 @@
+hangman
+angular
+mongodb
+mongoose
+express
+javascript
+typescript
+okta
+authentication
+database
