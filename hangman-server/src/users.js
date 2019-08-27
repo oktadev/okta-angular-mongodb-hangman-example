@@ -10,14 +10,15 @@ const UserSchema = new mongoose.Schema({
 
 const User = mongoose.model('User', UserSchema);
 
-function getUserObject(req, res, next) {
+function getUserDocument(req, res, next) {
   User.findOne({email: req.user.email}, (err, user) => {
      if (err || !user) {
          res.status('400').json({status: 'user-missing'});
      }
-     req.userObj = user;
+     req.userDocument = user;
      next();
   });
 }
 
-module.exports = { UserSchema, User, getUserObject };
+module.exports = { UserSchema, User, getUserDocument };
+

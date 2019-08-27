@@ -4,7 +4,7 @@
       <i class="fa fa-spinner fa-spin"></i>
     </div>
 
-    <div class="col-sm" *ngIf="!loading && !profile">
+    <div class="col-sm" *ngIf="!loading">
       <p class="clue">{{game.clue}}</p>
       <div class="guesses">
         <span class="guessed" *ngFor="let c of getGuessed()">{{c}}</span>

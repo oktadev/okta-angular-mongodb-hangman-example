@@ -8,8 +8,7 @@ import { environment } from '../environments/environment';
 })
 export class HangmanService {
 
-    constructor(private http: HttpClient, public oktaAuth: OktaAuthService) {
-    }
+    constructor(private http: HttpClient, public oktaAuth: OktaAuthService) {}
 
     private async request(method: string, url: string, data?: any) {
       const token = await this.oktaAuth.getAccessToken();
@@ -46,5 +45,4 @@ export class HangmanService {
     getLeaderboard() {
       return this.request('GET', `${environment.hangmanServer}/leaderboard`);
     }
-
 }

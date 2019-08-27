@@ -7,7 +7,7 @@ import { OktaAuthService } from '@okta/okta-angular';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  title = 'timeline-client';
+  title = 'hangman-client';
   isAuthenticated: boolean;
 
   constructor(public oktaAuth: OktaAuthService) {

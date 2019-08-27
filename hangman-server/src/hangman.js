@@ -2,7 +2,7 @@ const express = require('express');
 const users = require('./users');
 const fs = require("fs");
 
-function createRouter(db) {
+function createRouter() {
   const router = express.Router();
   const words = fs.readFileSync('./src/words.txt')
                   .toString()
@@ -13,11 +13,11 @@ function createRouter(db) {
   function makeClue(word, letters) {
     return word.split('').map(c => letters.includes(c) ? c : '_').join('');
   }
-
+  
   router.get('/game',
-             users.getUserObject,
-             async (req, res, next) => {
-    const user = req.userObj;
+              users.getUserDocument,
+              async (req, res, next) => {
+    const user = req.userDocument;
     if (!user.currentWord) {
       const newWord = words[Math.floor(Math.random()*words.length)];
       user.currentWord = newWord;
@@ -30,11 +30,11 @@ function createRouter(db) {
         guesses: user.lettersGuessed
     });
   });
-
+  
   router.put('/game',
-             users.getUserObject,
-             function (req, res, next) {
-    const user = req.userObj;
+           users.getUserDocument,
+           async (req, res, next) => {
+    const user = req.userDocument;
     if (!user.currentWord) {
       return res.status(400).json({status: 'no-game'});
     } else {
@@ -43,40 +43,32 @@ function createRouter(db) {
           user.lettersGuessed += c;
       }
       const clue = makeClue(user.currentWord, user.lettersGuessed);
-      let respone;
+      const response = {
+          clue: clue,
+          guesses: user.lettersGuessed
+      };
+
       if (user.lettersGuessed.length>6 && clue.includes('_')) {
-        response = {
-            status: 'lost',
-            clue: user.currentWord,
-            guesses: user.lettersGuessed
-        };
+        response.status = 'lost';
+        response.clue = user.currentWord;
         user.currentWord = '';
         user.lettersGuessed = '';
       } else if (!clue.includes('_')) {
-        response = {
-            status: 'won',
-            clue: user.currentWord,
-            guesses: user.lettersGuessed
-        };
+        response.status = 'won';
         user.currentWord = '';
         user.lettersGuessed = '';
       } else {
-        response = {
-            status: 'ok',
-            clue: makeClue(user.currentWord, user.lettersGuessed),
-            guesses: user.lettersGuessed
-        };
+        response.status = 'ok';
       }
-      user.save().then(() => {
-        res.status(200).json(response);
-      });
+      await user.save();
+      res.status(200).json(response);
     }
   });
 
   router.get('/profile',
-             users.getUserObject,
-             function (req, res, next) {
-    const user = req.userObj;
+           users.getUserDocument,
+           (req, res, next) => {
+    const user = req.userDocument;
     res.status(200).json({
         email: user.email,
         username: user.username,
@@ -84,30 +76,26 @@ function createRouter(db) {
     });
   });
 
-  router.put('/profile', (req, res, next) => {
-    users.User.exists({email: req.user.email}).then((exists) => {
-      if (exists) {
-        return res.status(400).json({status: 'user-exists'});
-      }
-      return users.User.create({email: req.user.email, username: req.body.username, score: 0});
-    }).then((user) => {
-        if (user) res.status(200).json({status: 'ok'});
-    });
+  router.put('/profile', async (req, res, next) => {
+    const exists = await users.User.exists({email: req.user.email});
+    if (exists) {
+      return res.status(400).json({status: 'user-exists'});
+    }
+    await users.User.create({email: req.user.email, username: req.body.username, score: 0});
+    res.status(200).json({status: 'ok'});
   });
 
-  router.get('/leaderboard', function (req, res, next) {
-    users.User.find()
-              .sort({ score: 'desc'})
-              .select('username score')
-              .limit(20)
-              .then(result => {
-          res.status(200).json(result.map(entry => ({
-              username: entry.username,
-              score: entry.score
-          })));
-      });
+  router.get('/leaderboard', async (req, res, next) => {
+    const result = await users.User.find()
+                                   .sort({ score: 'desc'})
+                                   .limit(20)
+                                   .select('username score');
+    res.status(200).json(result.map(entry => ({
+      username: entry.username,
+      score: entry.score
+    })));
   });
-
+  
   return router;
 }
 

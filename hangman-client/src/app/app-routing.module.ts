@@ -4,8 +4,7 @@ import { HomeComponent } from './home/home.component';
 import { ProfileComponent } from './profile/profile.component';
 import { GameComponent } from './game/game.component';
 import { LeaderboardComponent } from './leaderboard/leaderboard.component';
-import { OktaCallbackComponent, OktaAuthGuard } from '@okta/okta-angular';
-
+import { OktaCallbackComponent } from '@okta/okta-angular';
 
 const routes: Routes = [
   {

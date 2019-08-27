@@ -1,37 +1,34 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { HttpClientModule } from '@angular/common/http';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { HomeComponent } from './home/home.component';
-import { GameComponent } from './game/game.component';
-import { ProfileComponent } from './profile/profile.component';
-import { LeaderboardComponent } from './leaderboard/leaderboard.component';
-
+import { HttpClientModule } from '@angular/common/http';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { OktaAuthModule } from '@okta/okta-angular';
+import { HomeComponent } from './home/home.component';
+import { ProfileComponent } from './profile/profile.component';
+import { GameComponent } from './game/game.component';
+import { LeaderboardComponent } from './leaderboard/leaderboard.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     HomeComponent,
-    GameComponent,
     ProfileComponent,
+    GameComponent,
     LeaderboardComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
-    BrowserAnimationsModule,
     HttpClientModule,
     FormsModule,
     ReactiveFormsModule,
     OktaAuthModule.initAuth({
-      issuer: 'https://dev-322018.oktapreview.com/oauth2/default',
+      issuer: 'https://dev-133320.okta.com/oauth2/default',
       redirectUri: 'http://localhost:4200/implicit/callback',
-      clientId: '0oaipoqa789EAewTL0h7'
+      clientId: '0oa17lv9kaAjuPcit357'
     })
   ],
   providers: [],
